@@ -45,7 +45,7 @@ function ScheduleIcon() {
   );
 }
 
-const tabs = [
+const allTabs = [
   { path: '/', label: 'Home', icon: HomeIcon },
   { path: '/scan', label: 'Scan QR', icon: ScanIcon },
   { path: '/history', label: 'History', icon: HistoryIcon },
@@ -57,8 +57,10 @@ export function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Hide on Home if desired
-  // if (location.pathname === '/') return null;
+  // Hide entire bottom nav on Home screen
+  if (location.pathname === '/') return null;
+
+  const tabs = allTabs;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 w-full max-w-md mx-auto border-t border-border bg-background z-50">
