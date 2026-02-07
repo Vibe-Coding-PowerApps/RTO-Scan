@@ -1068,7 +1068,7 @@ export default function ScanPage() {
                     
                     return days.map((day) => (
                       <button
-                        key={day.dateString}
+                        key={`${month}-${day.dateString}`}
                         data-date={day.dateString}
                         onMouseDown={() => {
                           // Reset drag on mouse down
