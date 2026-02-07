@@ -425,8 +425,8 @@ export default function ScanPage() {
               <CardTitle className="text-base flex items-center gap-2">
                 {scanResult.status === 'success' ? (
                   <>
-                    <IconCheck className="w-4 h-4 text-accent-foreground" />
-                    <span className="text-accent-foreground">Success</span>
+                    <IconCheck className="w-4 h-4 text-green-600" />
+                    <span className="text-green-600 font-semibold">Success</span>
                   </>
                 ) : scanResult.status === 'occupied' ? (
                   <>
@@ -452,7 +452,11 @@ export default function ScanPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Action:</span>
-                <span className="font-semibold text-foreground capitalize">{scanResult.action}</span>
+                <span className={`font-semibold capitalize ${
+                  scanResult.action === 'sign-in' 
+                    ? 'text-green-600' 
+                    : 'text-orange-600'
+                }`}>{scanResult.action}</span>
               </div>
               {scanResult.message && (
                 <div className="pt-2 border-t border-border">
