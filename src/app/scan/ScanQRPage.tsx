@@ -106,11 +106,10 @@ export default function ScanQRPage() {
       <div className="w-full max-w-md flex-1 flex flex-col items-center justify-start px-4 py-8">
         {/* Title Section */}
         <div className="w-full text-left mb-8">
-          <h1 className="text-4xl sm:text-5xl font-bold mb-2">
-            <span className="text-primary">Scan</span>
-            <span className="text-foreground"> QR Code</span>
+          <h1 className="text-3xl font-bold mb-2 text-foreground">
+            Scan QR Code
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Position the QR code within the frame
           </p>
         </div>
