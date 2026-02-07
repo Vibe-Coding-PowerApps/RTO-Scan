@@ -30,6 +30,7 @@ export interface AuditSummary {
 export interface FilterOptions {
   userId?: string
   userName?: string
+  userEmail?: string
   action?: 'sign-in' | 'sign-out' | 'all'
   dateFrom?: Date
   dateTo?: Date

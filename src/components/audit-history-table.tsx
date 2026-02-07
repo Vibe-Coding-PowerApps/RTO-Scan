@@ -16,9 +16,10 @@ import { IconLogin, IconLogout } from '@tabler/icons-react'
 interface AuditHistoryTableProps {
   records: SignInOutRecord[]
   loading?: boolean
+  hideEmail?: boolean
 }
 
-export function AuditHistoryTable({ records, loading = false }: AuditHistoryTableProps) {
+export function AuditHistoryTable({ records, loading = false, hideEmail = false }: AuditHistoryTableProps) {
   if (loading) {
     return (
       <div className="space-y-2 w-full">
@@ -38,51 +39,80 @@ export function AuditHistoryTable({ records, loading = false }: AuditHistoryTabl
   }
 
   return (
-    <div className="border rounded-lg overflow-hidden">
+    <div className="overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50">
             <TableHead className="w-12">Action</TableHead>
-            <TableHead>User Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Timestamp</TableHead>
-            <TableHead>IP Address</TableHead>
-            <TableHead>Device</TableHead>
+            {/* <TableHead>User Name</TableHead> */}
+            {!hideEmail && <TableHead>Email</TableHead>}
+            <TableHead>Sign In</TableHead>
+            <TableHead>Sign Out</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {records.map((record) => (
-            <TableRow key={record.id} className="hover:bg-muted/50">
-              <TableCell className="w-12">
-                {record.action === 'sign-in' ? (
-                  <div className="flex items-center justify-center">
-                    <IconLogin className="h-4 w-4 text-green-600" />
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center">
-                    <IconLogout className="h-4 w-4 text-red-600" />
-                  </div>
+          {/* Group records by user and pair sign-in/sign-out */}
+          {(() => {
+            // Group by userId, then pair sign-in and sign-out
+            const grouped: Record<string, SignInOutRecord[]> = {};
+            records.forEach((rec) => {
+              if (!grouped[rec.userId]) grouped[rec.userId] = [];
+              grouped[rec.userId].push(rec);
+            });
+            // For each user, pair sign-in and sign-out by timestamp order
+            const rows: Array<{
+              signIn?: SignInOutRecord;
+              signOut?: SignInOutRecord;
+            }> = [];
+            Object.values(grouped).forEach((userRecords) => {
+              const sorted = [...userRecords].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+              let i = 0;
+              while (i < sorted.length) {
+                if (sorted[i].action === 'sign-in') {
+                  const signIn = sorted[i];
+                  let signOut: SignInOutRecord | undefined = undefined;
+                  if (i + 1 < sorted.length && sorted[i + 1].action === 'sign-out') {
+                    signOut = sorted[i + 1];
+                    i += 2;
+                  } else {
+                    i += 1;
+                  }
+                  rows.push({ signIn, signOut });
+                } else {
+                  // orphan sign-out
+                  rows.push({ signOut: sorted[i] });
+                  i += 1;
+                }
+              }
+            });
+            return rows.map((pair, idx) => (
+              <TableRow key={pair.signIn?.id || pair.signOut?.id || idx} className="hover:bg-muted/50">
+                <TableCell className="w-12">
+                  {pair.signIn ? (
+                    <div className="flex items-center justify-center">
+                      <IconLogin className="h-4 w-4 text-green-600" />
+                    </div>
+                  ) : pair.signOut ? (
+                    <div className="flex items-center justify-center">
+                      <IconLogout className="h-4 w-4 text-red-600" />
+                    </div>
+                  ) : null}
+                </TableCell>
+                {/* <TableCell className="font-medium">{pair.signIn?.userName || pair.signOut?.userName}</TableCell> */}
+                {!hideEmail && (
+                  <TableCell className="text-sm text-muted-foreground">{pair.signIn?.userEmail || pair.signOut?.userEmail}</TableCell>
                 )}
-              </TableCell>
-              <TableCell className="font-medium">{record.userName}</TableCell>
-              <TableCell className="text-sm text-muted-foreground">{record.userEmail}</TableCell>
-              <TableCell className="text-sm">
-                {new Date(record.timestamp).toLocaleString()}
-              </TableCell>
-              <TableCell className="text-sm text-muted-foreground font-mono">
-                {record.ipAddress || '-'}
-              </TableCell>
-              <TableCell className="text-sm text-muted-foreground">
-                {record.deviceInfo || '-'}
-              </TableCell>
-              <TableCell>
-                <Badge variant={record.status === 'success' ? 'default' : 'destructive'}>
-                  {record.status}
-                </Badge>
-              </TableCell>
-            </TableRow>
-          ))}
+                <TableCell className="text-sm">{pair.signIn ? new Date(pair.signIn.timestamp).toLocaleString() : '-'}</TableCell>
+                <TableCell className="text-sm">{pair.signOut ? new Date(pair.signOut.timestamp).toLocaleString() : '-'}</TableCell>
+                <TableCell>
+                  <Badge variant={(pair.signIn?.status || pair.signOut?.status) === 'success' ? 'default' : 'destructive'}>
+                    {pair.signIn?.status || pair.signOut?.status}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ));
+          })()}
         </TableBody>
       </Table>
     </div>
