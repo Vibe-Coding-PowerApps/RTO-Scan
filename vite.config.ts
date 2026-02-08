@@ -5,17 +5,17 @@ import { powerApps } from "./plugins/powerApps";
 import fs from "fs";
 
 // https://vite.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(() => {
   // Always include Power Apps plugin in dev for CORS
   const plugins = [react(), powerApps()];
   // HTTPS config (only if certs exist)
-  let https = false;
+  let https: any = undefined;
   try {
     if (fs.existsSync('cert/key.pem') && fs.existsSync('cert/cert.pem')) {
       https = {
         key: fs.readFileSync('cert/key.pem'),
         cert: fs.readFileSync('cert/cert.pem'),
-      };
+      } as any;
     }
   } catch (e) {
     console.warn('Could not load HTTPS certs:', e);

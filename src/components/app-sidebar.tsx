@@ -61,6 +61,11 @@ const data = {
       url: "/app/audit-history",
       icon: IconHistory,
     },
+    {
+      title: "Office Buddies",
+      url: "/app/office-buddies",
+      icon: IconUsers,
+    },
   ],
   navClouds: [
     {
