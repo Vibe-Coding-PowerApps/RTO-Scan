@@ -24,6 +24,11 @@ export default function HistoryPage() {
     { value: 'dec-2025', label: 'December 2025' },
   ];
 
+  // Reset page to 1 when month changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedMonth]);
+
   useEffect(() => {
     // Synchronous mock data for instant load
     let filtered: SignInOutRecord[] = [];

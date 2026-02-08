@@ -38,7 +38,7 @@ export default function FloorMapPage() {
             </div>
             <Select value={selectedFloor} onValueChange={value => {
               setSelectedFloor(value);
-              setCurrentPage(1);
+              setCurrentPage(1); // Reset page when floor changes
             }}>
               <SelectTrigger className="w-40" aria-label="Select floor">
                 <SelectValue placeholder="Select floor" />
