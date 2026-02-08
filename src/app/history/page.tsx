@@ -16,9 +16,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-
-  // Month options (could be dynamic)
+  const itemsPerPage = 6;
   const monthOptions = [
     { value: 'all', label: 'All Time' },
     { value: 'feb-2026', label: 'February 2026' },
@@ -77,7 +75,6 @@ export default function HistoryPage() {
         ];
       }
       setRecords(filtered);
-
       // Pair/group records for pagination
       const grouped: Record<string, SignInOutRecord[]> = {};
       filtered.forEach((rec) => {
@@ -142,13 +139,13 @@ export default function HistoryPage() {
           </div>
           <div className="w-full max-w-md min-h-[420px] overflow-x-auto rounded-lg bg-card border border-border shadow-sm mb-4 flex flex-col justify-start">
             <AuditHistoryTable
-              records={pairedRows.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)}
+              pairs={pairedRows.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)}
               loading={loading}
               hideEmail
             />
           </div>
           {/* Pagination Controls */}
-          {records.length > itemsPerPage && (
+          {pairedRows.length > itemsPerPage && (
             <div className="w-full flex flex-wrap items-center justify-center gap-2 mt-2 pt-2 border-t border-border px-2">
               <button
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
@@ -158,7 +155,7 @@ export default function HistoryPage() {
                 ← Prev
               </button>
               <div className="flex items-center gap-1 flex-wrap justify-center">
-                {Array.from({ length: Math.ceil(records.length / itemsPerPage) }, (_, i) => i + 1).map((page) => (
+                {Array.from({ length: Math.ceil(pairedRows.length / itemsPerPage) }, (_, i) => i + 1).map((page) => (
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
@@ -173,9 +170,9 @@ export default function HistoryPage() {
                 ))}
               </div>
               <button
-                onClick={() => setCurrentPage(Math.min(Math.ceil(records.length / itemsPerPage), currentPage + 1))}
+                onClick={() => setCurrentPage(Math.min(Math.ceil(pairedRows.length / itemsPerPage), currentPage + 1))}
                 className="px-2 sm:px-3 py-1 sm:py-2 h-7 sm:h-8 text-xs whitespace-nowrap rounded border border-border bg-card text-foreground disabled:opacity-50"
-                disabled={currentPage === Math.ceil(records.length / itemsPerPage)}
+                disabled={currentPage === Math.ceil(pairedRows.length / itemsPerPage)}
               >
                 Next →
               </button>
