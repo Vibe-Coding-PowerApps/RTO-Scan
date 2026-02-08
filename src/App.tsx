@@ -5,7 +5,7 @@ import { getContext } from '@microsoft/power-apps/app';
 import { BottomNav } from './components/bottom-nav';
 
 const HomePage = lazy(() => import('./app/home/page'));
-const ScanQRPage = lazy(() => import('./app/scan/ScanQRPage'));
+const ScanQRPage = lazy(() => import('./app/scan/page'));
 const HistoryPage = lazy(() => import('./app/history/page'));
 const FloorMapPage = lazy(() => import('./app/floormap/page'));
 const SchedulePage = lazy(() => import('./app/schedule/page'));
