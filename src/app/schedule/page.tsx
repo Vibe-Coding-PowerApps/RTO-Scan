@@ -23,7 +23,7 @@ export default function SchedulePage() {
           <div className="w-full flex items-start justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold mb-2 text-foreground">Office Schedule</h1>
-              <p className="text-sm text-muted-foreground">View and manage your work schedule</p>
+              <p className="text-sm text-muted-foreground">View and manage your attendance schedule</p>
             </div>
           </div>
           <div className="w-full max-w-md min-h-[420px] overflow-visible rounded-lg bg-card shadow-sm mb-4 flex flex-col justify-start">
@@ -229,11 +229,7 @@ export default function SchedulePage() {
               </div>
             </div>
 
-            <div className="mt-4 text-center text-xs text-muted-foreground">
-              {selectedDays.length > 0
-                ? `Selected: ${selectedDays.join(', ')}`
-                : 'Select days from the calendar.'}
-            </div>
+            {/* Removed selected dates display from the bottom of the calendar as requested */}
           </div>
         </div>
       </div>

@@ -112,7 +112,7 @@ export default function HistoryPage() {
         </div>
       </div>
       {/* Scrollable Content Area */}
-      <div className="w-full max-w-md flex-1 px-4 py-8 flex flex-col items-center justify-between pb-6">
+      <div className="w-full max-w-md flex-1 px-4 py-8 flex flex-col items-center justify-start pb-28 sm:pb-6">
         <div className="w-full flex-1 flex flex-col items-start justify-start">
           <div className="w-full flex items-start justify-between mb-6">
             <div>
